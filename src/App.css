@@ -80,6 +80,14 @@ input.search {
   font-weight: 700;
   font-size: 16px;
   border-radius: 2px;
+  cursor: pointer;
+  transition-duration: 0.3s;
+}
+
+.btn-create:hover {
+  background-color: #fdf7e4;
+  color: #bbab8c;
+  border: 1px solid #bbab8c;
 }
 
 div.active-notes {
@@ -91,6 +99,8 @@ div.card {
   color: #fdf7e4;
   border-radius: 3px;
   padding-top: 1rem;
+  margin: 1rem;
+  max-width: 400px;
 }
 
 .date {
@@ -112,6 +122,7 @@ div.archive {
   width: 50%;
   text-align: center;
   color: #faeed1;
+  cursor: pointer;
 }
 
 div.delete {
@@ -120,6 +131,18 @@ div.delete {
   text-align: center;
   border-right: 1px solid #fdf7e4;
   color: #d80032;
+  cursor: pointer;
+}
+
+div.archive:hover {
+  background: #fdf7e4;
+  color: #bbab8c;
+  border: 1px solid #bbab8c;
+}
+
+div.delete:hover {
+  background: #fdf7e4;
+  border: 1px solid #bbab8c;
 }
 
 .titleNote,
@@ -130,4 +153,9 @@ div.delete {
 .content {
   margin: 1rem;
   padding-bottom: 2rem;
+}
+
+p.no-notes {
+  font-size: 0.8rem;
+  color: rgba(0, 0, 0, 0.8);
 }

@@ -2,21 +2,14 @@ import React from 'react';
 import NameApp from '../components/NameApp';
 import Search from '../components/Search';
 
-class Header extends React.Component {
-    constructor(props) {
-        super(props);
-
-        
-    }
-
-  render() {
+function Header({onChange}) {
+  
     return (
       <div className="header">
         <NameApp />
-        <Search />
+        <Search onChange={onChange} />
       </div>
     );
   }
-}
 
 export default Header;
