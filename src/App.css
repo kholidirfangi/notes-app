@@ -14,6 +14,9 @@ textarea:focus {
 div.main-content {
   margin-top: 4rem;
   width: 100%;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 form.input-content {
@@ -26,26 +29,30 @@ div.input-content p {
   color: #bbab8c;
 }
 
+p.remainder-char {
+  text-align: right;
+  font-size: 0.8rem;
+}
+
 .heading {
   font-weight: 400;
 }
 
 .input-judul {
-  width: 99%;
+  width: 99.4%;
   margin-bottom: 1rem;
   height: 30px;
   border: 1px solid #bbab8c;
   border-radius: 2px;
-  padding-left: 8px;
 }
 
 textarea {
-  width: 99%;
-  height: 150px;
+  width: 99.4%;
+  height: 200px;
   border: 1px solid #bbab8c;
   border-radius: 2px;
-  padding-left: 8px;
 }
+
 div.header {
   display: flex;
   justify-content: space-between;
@@ -95,17 +102,19 @@ div.active-notes {
 }
 
 div.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   background-color: #bbab8c;
   color: #fdf7e4;
   border-radius: 3px;
   padding-top: 1rem;
   margin: 1rem;
-  max-width: 400px;
+  max-width: 100%;
 }
 
 .date {
-  margin-top: -20px;
-  font-size: 0.8;
+  font-size: 0.8rem;
 }
 
 div.btn-action {
@@ -120,6 +129,7 @@ div.btn-action {
 div.archive {
   font-weight: 700;
   width: 50%;
+  max-width: 800px;
   text-align: center;
   color: #faeed1;
   cursor: pointer;
@@ -140,6 +150,13 @@ div.archive:hover {
   border: 1px solid #bbab8c;
 }
 
+div.archives {
+  width: 100%;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 div.delete:hover {
   background: #fdf7e4;
   border: 1px solid #bbab8c;
@@ -158,4 +175,20 @@ div.delete:hover {
 p.no-notes {
   font-size: 0.8rem;
   color: rgba(0, 0, 0, 0.8);
+}
+
+@media screen and (min-width: 768px) {
+  div.card-active-container,
+  div.archives-notes-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+@media screen and (min-width: 460px) and (max-width: 767px) {
+  div.card-active-container,
+  div.archives-notes-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
 }

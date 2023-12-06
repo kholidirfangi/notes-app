@@ -6,8 +6,10 @@ import CardFooter from './CardFooter';
 function Card({ id, title, date, content, onDelete, onClick, children }) {
   return (
     <div className="card" key={id}>
-      <CardHeader titleNote={title} dateNote={date} />
-      <CardBody content={content} />
+      <div>
+        <CardHeader titleNote={title} dateNote={date} />
+        <CardBody content={content} />
+      </div>
       <CardFooter onDelete={onDelete} onClick={onClick}>
         {children}
       </CardFooter>

@@ -8,12 +8,13 @@ import Card from './components/Card';
 
 class App extends React.Component {
   constructor(props) {
+    const dataKey = 'notesData';
     super(props);
 
     this.state = {
       notes: getData(),
       archivedNotes: [],
-      seachValue: '',
+      searchValue: '',
       title: '',
       content: '',
       maxChar: 50,
@@ -32,25 +33,13 @@ class App extends React.Component {
 
   onSeachInputHandler(event) {
     const value = event.target.value;
-
-    this.setState((prevState) => {
-      const notes = prevState.notes;
-      console.log(notes);
-      const showNotes = value
-        ? notes.filter(
-            (note) => note.title.includes(value) || note.content.includes(value)
-          )
-        : notes;
-      return {
-        seachValue: value,
-        notes: showNotes,
-      };
-    });
+    this.setState({ searchValue: value });
   }
 
   onAddNoteHandler({ title, content }) {
     const currentDate = new Date().toLocaleString('id-ID');
-    if (title || content !== '') {
+
+    if (title !== '' && content !== '') {
       this.setState(
         (prevState) => {
           return {
@@ -74,34 +63,44 @@ class App extends React.Component {
 
   onArchiveHandler(id) {
     const archivedNote = this.state.notes.find((note) => note.id === id);
-    this.setState((prevState) => {
-      return {
-        notes: prevState.notes.filter((note) => note.id !== id),
-        archivedNotes: [...prevState.archivedNotes, archivedNote],
-      };
-    });
+    this.setState(
+      (prevState) => {
+        return {
+          notes: prevState.notes.filter((note) => note.id !== id),
+          archivedNotes: [...prevState.archivedNotes, archivedNote],
+        };
+      },
+      () => {
+        this.saveData();
+      }
+    );
   }
 
   onMovedHandler(id) {
-    this.setState((prevState) => {
-      const movedNote = prevState.archivedNotes.find(
-        (archivedNote) => archivedNote.id === id
-      );
-
-      if (movedNote) {
-        const updatedNotes = [...prevState.notes, { ...movedNote }];
-        const updatedArchivedNotes = prevState.archivedNotes.filter(
-          (archivedNote) => archivedNote.id !== id
+    this.setState(
+      (prevState) => {
+        const movedNote = prevState.archivedNotes.find(
+          (archivedNote) => archivedNote.id === id
         );
 
-        return {
-          notes: updatedNotes,
-          archivedNotes: updatedArchivedNotes,
-        };
-      }
+        if (movedNote) {
+          const updatedNotes = [...prevState.notes, { ...movedNote }];
+          const updatedArchivedNotes = prevState.archivedNotes.filter(
+            (archivedNote) => archivedNote.id !== id
+          );
 
-      return prevState;
-    });
+          return {
+            notes: updatedNotes,
+            archivedNotes: updatedArchivedNotes,
+          };
+        }
+
+        return prevState;
+      },
+      () => {
+        this.saveData();
+      }
+    );
   }
 
   onDeleteHandler(id) {
@@ -110,6 +109,25 @@ class App extends React.Component {
       (archivedNote) => archivedNote.id !== id
     );
     this.setState({ notes, archivedNotes });
+
+    const dataStored = localStorage.getItem(this.dataKey);
+    const dataParse = JSON.parse(dataStored);
+
+    const updateNotes = dataParse.notes.filter((note) => note.id !== id);
+    const updateArchivedNotes = dataParse.archivedNotes.filter(
+      (archivedNote) => archivedNote.id !== id
+    );
+
+    const updateData = {
+      notes: updateNotes,
+      archivedNotes: updateArchivedNotes,
+    };
+
+    localStorage.setItem(this.dataKey, JSON.stringify(updateData));
+
+    if (updateData.notes.length <= 0 && updateData.archivedNotes.length <= 0) {
+      localStorage.removeItem(this.dataKey);
+    }
   }
 
   onInputTitleEventHandler(event) {
@@ -152,16 +170,47 @@ class App extends React.Component {
       archivedNotes,
     };
 
-    localStorage.setItem('notesData', JSON.stringify(dataToSave));
+    localStorage.setItem(this.dataKey, JSON.stringify(dataToSave));
+  }
+
+  componentDidMount() {
+    const savedData = localStorage.getItem(this.dataKey);
+
+    if (savedData) {
+      const { notes, archivedNotes } = JSON.parse(savedData);
+
+      this.setState({
+        notes: notes || [],
+        archivedNotes: archivedNotes || [],
+      });
+    }
   }
 
   render() {
+    const filteredNotes = this.state.notes.filter(
+      (note) =>
+        note.title
+          .toLowerCase()
+          .includes(this.state.searchValue.toLowerCase()) ||
+        note.content
+          .toLowerCase()
+          .includes(this.state.searchValue.toLowerCase())
+    );
+
+    const filteredArchivedNotes = this.state.archivedNotes.filter(
+      (archivedNote) =>
+        archivedNote.title
+          .toLowerCase()
+          .includes(this.state.searchValue.toLowerCase()) ||
+        archivedNote.content
+          .toLowerCase()
+          .includes(this.state.searchValue.toLowerCase())
+    );
     return (
       <div>
         <Header onChange={this.onSeachInputHandler} />
         <Body
-          notes={this.state.notes}
-          // addNote={this.onAddNoteHandler}
+          notes={filteredNotes}
           onDelete={this.onDeleteHandler}
           onArchive={this.onArchiveHandler}
           onSubmit={this.onSubmitEventHandler}
@@ -174,20 +223,22 @@ class App extends React.Component {
 
         <div className="archives">
           <Heading>Arsip</Heading>
-          {this.state.archivedNotes.length > 0 ? (
-            this.state.archivedNotes.map((archivedNote) => (
-              <Card
-                key={archivedNote.id}
-                id={archivedNote.id}
-                {...archivedNote}
-                children="Pindahkan"
-                onDelete={() => this.onDeleteHandler(archivedNote.id)}
-                onClick={() => this.onMovedHandler(archivedNote.id)}
-              />
-            ))
-          ) : (
-            <p className="no-notes">tidak ada catatan..</p>
-          )}
+          <div className="archives-notes-container">
+            {filteredArchivedNotes.length > 0 ? (
+              filteredArchivedNotes.map((archivedNote) => (
+                <Card
+                  key={archivedNote.id}
+                  id={archivedNote.id}
+                  {...archivedNote}
+                  children="Pindahkan"
+                  onDelete={() => this.onDeleteHandler(archivedNote.id)}
+                  onClick={() => this.onMovedHandler(archivedNote.id)}
+                />
+              ))
+            ) : (
+              <p className="no-notes">tidak ada catatan..</p>
+            )}
+          </div>
         </div>
       </div>
     );

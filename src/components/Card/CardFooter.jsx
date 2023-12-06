@@ -4,7 +4,7 @@ function CardFooter({ onDelete, onClick, children }) {
   return (
     <div className="btn-action">
       <div className="delete" onClick={onDelete}>
-        Delete
+        Hapus
       </div>
       <div className="archive" onClick={onClick}>
         {children}
