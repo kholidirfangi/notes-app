@@ -8,15 +8,15 @@ function Body({
   onArchive,
   onSubmit,
   onInputTitle,
-  onInputContent,
+  onInputBody,
   title,
-  content,
+  body,
   maxChar,
 }) {
   return (
     <div className="main-content">
       <form className="input-content" onSubmit={onSubmit}>
-        <Heading>Buat Catatan</Heading>
+        <Heading style="center">Buat Catatan</Heading>
         <p className="remainder-char">sisa karakter: {maxChar}</p>
         <div>
           <input
@@ -32,8 +32,8 @@ function Body({
           <textarea
             name="note-content"
             placeholder="isi catatan.."
-            value={content}
-            onChange={onInputContent}
+            value={body}
+            onChange={onInputBody}
           ></textarea>
         </div>
 
@@ -45,6 +45,7 @@ function Body({
         <div className="card-active-container">
           {notes.length > 0 ? (
             notes.map((note) => (
+              console.log(note),
               <Card
                 key={note.id}
                 id={note.id}

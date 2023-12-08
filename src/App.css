@@ -6,6 +6,12 @@ body {
   margin: 0 1rem;
 }
 
+div.container {
+  max-width: 1024px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 input:focus,
 textarea:focus {
   outline: 1px solid #bbab8c;
@@ -14,17 +20,17 @@ textarea:focus {
 div.main-content {
   margin-top: 4rem;
   width: 100%;
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 form.input-content {
   display: flex;
   flex-direction: column;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-div.input-content p {
+form.input-content p {
   text-align: right;
   color: #bbab8c;
 }
@@ -152,9 +158,6 @@ div.archive:hover {
 
 div.archives {
   width: 100%;
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 div.delete:hover {
@@ -175,6 +178,10 @@ div.delete:hover {
 p.no-notes {
   font-size: 0.8rem;
   color: rgba(0, 0, 0, 0.8);
+}
+
+.center {
+  text-align: center;
 }
 
 @media screen and (min-width: 768px) {
