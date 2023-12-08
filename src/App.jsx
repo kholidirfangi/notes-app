@@ -2,7 +2,7 @@ import React from 'react';
 import Header from './Layouts/Header';
 import Body from './Layouts/Body';
 import './App.css';
-import { getInitialData, showFormattedDate } from './utils';
+import { getInitialData } from './utils';
 import Heading from './components/Heading';
 import Card from './components/Card';
 
